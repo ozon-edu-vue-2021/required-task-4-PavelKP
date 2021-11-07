@@ -1,9 +1,21 @@
 <template>
   <div v-click-outside="hideDropdown">
-    <input @focus="isOpened = true" type="text" name="" class="input" />
+    <input
+      @focus="isOpened = true"
+      type="text"
+      name=""
+      class="input"
+      :value="value"
+      @input="$emit('input', $event.target.value)"
+    />
     <div v-if="isOpened">
       <ul class="list" v-if="data.length">
-        <li class="listItem" v-for="item in data" :key="item.id">
+        <li
+          class="listItem"
+          v-for="item in data"
+          :key="item.id"
+          @click="handleClick(item)"
+        >
           {{ item.nationality }}
         </li>
       </ul>
@@ -28,10 +40,15 @@ export default {
   },
   props: {
     data: Array,
+    value: String,
   },
   methods: {
     hideDropdown() {
       this.isOpened = false;
+    },
+    handleClick(item) {
+      this.hideDropdown();
+      this.$emit("input", item.nationality);
     },
   },
 };
@@ -63,5 +80,11 @@ export default {
   height: 40px;
   padding: 10px 5px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.listItem:hover {
+  background-color: #1890ff;
+  color: #ffffff;
 }
 </style>

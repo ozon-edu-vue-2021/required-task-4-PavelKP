@@ -1,6 +1,6 @@
 <template>
   <form class="form">
-    <div>{{ gender }}</div>
+    <div>{{ citizenship }}</div>
     <h3 class="header">Личные данные</h3>
     <section class="lineGroup">
       <div class="inputWrapper">
@@ -69,7 +69,7 @@
     <section class="lineGroup">
       <div class="inputWrapper">
         <label for="birthDate" class="label text">Гражданство</label>
-        <c-dropdown :data="citizenships" />
+        <c-dropdown :data="citizenships" v-model="citizenship" />
       </div>
     </section>
   </form>
@@ -91,6 +91,7 @@ export default {
       birthDate: "",
       email: "",
       gender: "male",
+      citizenship: "",
     };
   },
   props: {
