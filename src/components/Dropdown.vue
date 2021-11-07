@@ -5,14 +5,14 @@
       type="text"
       class="input"
       :value="value"
-      @input="$emit('input', $event.target.value)"
+      @input="handleInput($event.target.value)"
       :placeholder="placeholder"
     />
     <div v-if="isOpened">
-      <ul class="list" v-if="data.length">
+      <ul class="list" v-if="filteredData.length">
         <li
           class="listItem"
-          v-for="item in data"
+          v-for="item in filteredData"
           :key="item.id"
           @click="handleClick(item)"
         >
@@ -32,6 +32,7 @@ export default {
   data() {
     return {
       isOpened: false,
+      filteredData: [],
     };
   },
   directives: {
@@ -57,6 +58,21 @@ export default {
       this.hideDropdown();
       this.$emit("input", item[this.fieldName]);
     },
+    handleInput(item) {
+
+			// trottling + foo + clear button
+      this.$emit("input", item);
+      const regExp = new RegExp(`${item}`, "i");
+      const foo = this.$props.data.slice();
+      const filteredData = foo.filter(({ nationality }) =>
+        regExp.test(nationality)
+      );
+      this.filteredData.splice(0, this.filteredData.length);
+      this.filteredData.push(...filteredData);
+    },
+  },
+  created() {
+    this.filteredData = [...this.$props.data];
   },
 };
 </script>
