@@ -201,15 +201,22 @@
         />
       </div>
     </section>
+    <div class="buttonWrapper">
+      <a-button type="primary" size="large" @click="handleFormSubmit"
+        >Отправить</a-button
+      >
+    </div>
   </form>
 </template>
 
 <script>
 import Input from "ant-design-vue/lib/input";
 import Radio from "ant-design-vue/lib/radio";
+import Button from "ant-design-vue/lib/button/button";
 import CustomDropdown from "./Dropdown.vue";
 import "ant-design-vue/lib/input/style/index.css";
 import "ant-design-vue/lib/radio/style/index.css";
+import "ant-design-vue/lib/button/style/index.css";
 
 export default {
   data() {
@@ -243,9 +250,20 @@ export default {
     "a-input": Input,
     "a-radio": Radio,
     "a-radio-group": Radio.Group,
+    "a-button": Button,
     "c-dropdown": CustomDropdown,
   },
-  methods: {},
+  methods: {
+    handleFormSubmit() {
+      const clearedData = { ...this.formData };
+      for (let key in clearedData) {
+        if (!clearedData[key]) {
+          delete clearedData[key];
+        }
+      }
+      console.log(clearedData);
+    },
+  },
 };
 </script>
 
@@ -284,6 +302,11 @@ export default {
   margin-bottom: 15px;
   font-size: 14px;
   color: rgb(182, 180, 180);
+}
+
+.buttonWrapper {
+  padding: 20px 0;
+  max-width: 1000px;
 }
 
 .form {
