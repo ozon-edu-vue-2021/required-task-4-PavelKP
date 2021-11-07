@@ -1,12 +1,12 @@
 <template>
-  <div v-click-outside="hideDropdown">
+  <div v-click-outside="hideDropdown" class="wrapper">
     <input
       @focus="isOpened = true"
       type="text"
-      name=""
       class="input"
       :value="value"
       @input="$emit('input', $event.target.value)"
+      :placeholder="placeholder"
     />
     <div v-if="isOpened">
       <ul class="list" v-if="data.length">
@@ -16,7 +16,7 @@
           :key="item.id"
           @click="handleClick(item)"
         >
-          {{ item.nationality }}
+          {{ item[fieldName] }}
         </li>
       </ul>
       <ul v-else class="list empty">
@@ -28,7 +28,6 @@
 
 <script>
 import ClickOutside from "vue-click-outside";
-
 export default {
   data() {
     return {
@@ -39,8 +38,16 @@ export default {
     ClickOutside,
   },
   props: {
-    data: Array,
+    data: {
+      type: Array,
+      default: () => [],
+    },
     value: String,
+    fieldName: {
+      type: String,
+      require: true,
+    },
+    placeholder: String,
   },
   methods: {
     hideDropdown() {
@@ -48,26 +55,43 @@ export default {
     },
     handleClick(item) {
       this.hideDropdown();
-      this.$emit("input", item.nationality);
+      this.$emit("input", item[this.fieldName]);
     },
   },
 };
 </script>
 
 <style scoped>
+.wrapper {
+  position: relative;
+}
+
 .input {
   width: 300px;
   height: 40px;
+  padding-left: 5px;
+  border: 1px solid #d9d9d9;
   font-size: 16px;
 }
 
+.input::placeholder {
+  color: #bfbfbf;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
 .list {
-  list-style: none;
+  position: absolute;
+  left: 0;
+  top: 40px;
+  width: 100%;
   padding: 0;
   margin: 0;
+  z-index: 2;
   background-color: #ffffff;
   box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
   max-height: calc(40px * 5);
+  list-style: none;
   overflow-x: hidden;
   overflow-y: scroll;
 }
