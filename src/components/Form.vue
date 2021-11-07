@@ -135,6 +135,9 @@
           />
         </div>
       </section>
+      <p class="tip">
+        Иностраницы заполняют латинскими буквами. Например, ivanov ivan
+      </p>
       <section class="lineGroup">
         <div class="inputWrapper">
           <label for="passportNumber" class="label text">Номер паспорта</label>
@@ -165,6 +168,39 @@
         </div>
       </section>
     </div>
+
+    <h3 class="header">Меняли ли фамилию или имя?</h3>
+    <section class="lineGroup">
+      <a-radio-group v-model="formData.isChanged" size="large">
+        <a-radio value="true">
+          <span class="text">Да</span>
+        </a-radio>
+        <a-radio value="false">
+          <span class="text">нет</span>
+        </a-radio>
+      </a-radio-group>
+    </section>
+
+    <section class="lineGroup" v-if="formData.isChanged === 'true'">
+      <div class="inputWrapper">
+        <label for="prevSurname" class="label text">Предыдущая фамилия</label>
+        <a-input
+          id="prevSurname"
+          placeholder="Введите фамилию"
+          size="large"
+          v-model="formData.prevSurname"
+        />
+      </div>
+      <div class="inputWrapper">
+        <label for="prevName" class="label text">Предыдущее имя</label>
+        <a-input
+          id="prevName"
+          placeholder="Введите имя"
+          size="large"
+          v-model="formData.prevName"
+        />
+      </div>
+    </section>
   </form>
 </template>
 
@@ -193,6 +229,9 @@ export default {
         latinSurname: "",
         passportCountry: "",
         passportType: "",
+        isChanged: "false",
+        prevName: "",
+        prevSurname: "",
       },
     };
   },
@@ -237,6 +276,14 @@ export default {
   display: flex;
   max-width: 1000px;
   margin-bottom: 10px;
+}
+
+.tip {
+  padding: 0;
+  margin: 0;
+  margin-bottom: 15px;
+  font-size: 14px;
+  color: rgb(182, 180, 180);
 }
 
 .form {
