@@ -1,16 +1,28 @@
 <template>
   <div id="app">
-    <Form />
+    <Form :citizenships="citizenships" :passportTypes="passportTypes" />
   </div>
 </template>
 
 <script>
 import Form from "./components/Form.vue";
+import citizenships from "@/assets/data/citizenships.json";
+import passportTypes from "@/assets/data/passport-types.json";
 
 export default {
   name: "App",
   components: {
     Form,
+  },
+  data() {
+    return {
+      citizenships: null,
+      passportTypes: null,
+    };
+  },
+  created() {
+    this.citizenships = citizenships;
+    this.passportTypes = passportTypes;
   },
 };
 </script>
