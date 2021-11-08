@@ -60,9 +60,9 @@ export default {
 
       if (this.isOpened) {
         this.isOpened = false;
-        const fullMatch = this.$props.data.find(({ nationality }) => {
-          return nationality?.toLowerCase() === value?.toLowerCase();
-        })?.nationality;
+        const fullMatch = this.$props.data.find((item) => {
+          return item?.[this.fieldName]?.toLowerCase() === value?.toLowerCase();
+        })?.[this.fieldName];
 
         if (fullMatch) {
           this.$emit("input", fullMatch);
@@ -87,8 +87,8 @@ export default {
 
       this.$emit("input", item);
       const regExp = new RegExp(`${item}`, "i");
-      const filteredData = this.$props.data.filter(({ nationality }) =>
-        regExp.test(nationality)
+      const filteredData = this.$props.data.filter((item) =>
+        regExp.test(item?.[this.fieldName])
       );
 
       this.filteredData = [...filteredData];
