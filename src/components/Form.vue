@@ -1,6 +1,5 @@
 <template>
   <form class="form">
-    <div>{{ formData.citizenship }}</div>
     <h3 class="header">Личные данные</h3>
     <section class="lineGroup">
       <div class="inputWrapper">
