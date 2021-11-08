@@ -2,10 +2,11 @@
   <div v-click-outside="handleClickOutside" class="wrapper">
     <input
       @focus="isOpened = true"
+      @input="throttledSearch($event.target.value)"
+      @keyup.enter="handleClickOutside"
       type="search"
       class="input"
       :value="value"
-      @input="handleInput($event.target.value)"
       :placeholder="placeholder"
     />
     <div v-if="isOpened">
@@ -28,11 +29,13 @@
 
 <script>
 import ClickOutside from "vue-click-outside";
+import { throttle } from "../utils";
 export default {
   data() {
     return {
       isOpened: false,
       filteredData: [],
+      throttledSearch: null,
     };
   },
   directives: {
@@ -78,7 +81,10 @@ export default {
       this.$emit("input", item[this.fieldName]);
     },
     handleInput(item) {
-      // trottling
+      if (!this.isOpened) {
+        this.isOpened = true;
+      }
+
       this.$emit("input", item);
       const regExp = new RegExp(`${item}`, "i");
       const filteredData = this.$props.data.filter(({ nationality }) =>
@@ -90,6 +96,7 @@ export default {
   },
   created() {
     this.filteredData = [...this.$props.data];
+    this.throttledSearch = throttle(this.handleInput, 1000);
   },
   updated() {
     console.log("updated");
